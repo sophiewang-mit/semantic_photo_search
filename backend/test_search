@@ -1,0 +1,13 @@
+import os
+from app.embeddings import embed_image, embed_text
+from app.search import PhotoIndex
+
+index = PhotoIndex()
+folder = "sample_images"
+for f in os.listdir(folder):
+    path = os.path.join(folder,f)
+    index.add(embed_image(path), path)
+
+results = index.search(embed_text("a dog"), k=3)
+for path, score in results:
+    print(f"{score:.3f} {path}")
