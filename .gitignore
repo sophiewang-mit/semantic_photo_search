@@ -6,3 +6,7 @@ node_modules/
 *.index
 uploads/
 .DS_Store
+data/
+*.npy
+*.npz
+models/*.pkl

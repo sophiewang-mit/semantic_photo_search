@@ -6,3 +6,6 @@ torch
 faiss-cpu
 pillow
 numpy
+scikit-learn
+pandas
+tqdm
