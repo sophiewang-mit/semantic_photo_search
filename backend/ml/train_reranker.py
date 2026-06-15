@@ -11,6 +11,7 @@ def main():
     cut = int(0.9 * len(y))
     tr, va = idx[:cut], idx[cut:]
 
+    # logistic training regression
     clf = LogisticRegression(max_iter = 1000, class_weight = "balanced")
     clf.fit(X[tr], y[tr])
 
