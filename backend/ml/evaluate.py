@@ -48,7 +48,7 @@ def evaluate(df):
         # order based on reranker
         rer_order = [row_to_id[c] for c in cand[np.argsort(-scores)]]
 
-        # checks if correct image is ranked
+        # find rank of image
         def rank_of(order):
             return order.index(true_id) + 1 if true_id in order else 10**9
         

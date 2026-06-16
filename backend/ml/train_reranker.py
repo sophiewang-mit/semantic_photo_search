@@ -4,7 +4,9 @@ from sklearn.metrics import roc_auc_score
 
 def main():
     d = np.load("data/train_pairs.npz")
-    X, y = d["X"], d["y"]
+    # features and labels matrices
+    X = d["X"]
+    y = d["y"]
 
     #randomize 
     idx = np.random.RandomState(0).permutation(len(y))

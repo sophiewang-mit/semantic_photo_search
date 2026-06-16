@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 import shutil, os
 from .embeddings import embed_image, embed_text
 from .search import PhotoIndex
+from .reranker import Reranker
 
 # server
 app = FastAPI()
@@ -22,9 +23,18 @@ async def upload(file: UploadFile = File(...)):
     index.add(embed_image(path), path)
     return {"status": "indexed", "filename": file.filename}
 
+reranker = Reranker()
 # search through query
 @app.get("/search")
-async def search(q: str, k: int = 5):
-    results = index.search(embed_text(q), k = k)
-    return {"results": [{"path": p, "score": s} for p, s in results]}
+async def search(q: str, k: int = 12, rerank: bool = True):
+    qvec = embed_text(q)
 
+    candidates = index.search_with_vectors(qvec, k = 100)
+
+    if rerank:
+        pairs = [(p, v) for p, _, v in candidates]
+        ranked = reranker.rerank(qvec, pairs)[: k]
+
+        return {"results": [{"path": p, "score": s} for p, s in ranked], "mode": "reranked"}
+
+    return {"results": [{"path": p, "score": s} for p, s, _ in candidates[:k]], "mode": "clip"}
