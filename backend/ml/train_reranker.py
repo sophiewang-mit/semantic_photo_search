@@ -17,7 +17,7 @@ def main():
     clf = LogisticRegression(max_iter = 1000, class_weight = "balanced")
     clf.fit(X[tr], y[tr])
 
-    auc = roc_auc_score(y[va], clf.predict_prob(X[va]))[:, 1]
+    auc = roc_auc_score(y[va], clf.predict_proba(X[va])[:, 1])
     print(f"validation pair-AUC: {auc:.4f}")
 
     with open("models/reranker.pkl", "wb") as f:

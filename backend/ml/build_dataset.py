@@ -12,7 +12,7 @@ ID_TO_ROW = {id: i for i, id in enumerate(IMG_IDS)}
 # columns: image, caption
 CAPTIONS_CSV = "data/flickr30k_subset/captions.csv"
 N_HARD_NEG = 4
-HELD_OUT = 2000 #images reserved for the test set
+HELD_OUT = 100 #2000 #images reserved for the test set
 
 def main():
     df = pd.read_csv(CAPTIONS_CSV)
@@ -20,7 +20,7 @@ def main():
 
     # test and train on different samples
     test_imgs = set(IMG_IDS[-HELD_OUT:])
-    train_df = df[-df["image"].isin(test_imgs)]
+    train_df = df[~df["image"].isin(test_imgs)]
 
     X, y = [], []
     for _, row in tqdm(train_df.iterrows(), total = len(train_df), desc = "pairs"):
@@ -45,7 +45,8 @@ def main():
     X = np.stack(X).astype("float32")
     y = np.array(y, dtype = "float32")
     np.savez("data/train_pairs.npz", X=X, y=y)
-    json.dump(sorted(test_imgs), open("data/test_images.json"))
+    with open("data/test_images.json", "w") as f:
+        json.dump(sorted(test_imgs), f)
     print(f"build {len(y)} pairs, {int(y.sum())} positive")
 
 if __name__ == "__main__":

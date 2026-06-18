@@ -2,8 +2,10 @@ import os, json
 import numpy as np
 from tqdm import tqdm
 from app.embeddings import embed_image
+import sys
 
-IMAGE_DIR = "data/flickr30k_subset/images"
+# added argument to image_dir to test if code works
+IMAGE_DIR = sys.argv[1] if len(sys.argv) > 1 else "data/flickr30k_subset/images"
 OUT_VECS = "data/image_embeddings.npy"
 OUT_IDS = "data/image_ids.json"
 

@@ -25,9 +25,9 @@ def evaluate(df):
     rer = {f"R@{k}": 0 for k in KS}; rer["MRR"] = 0.0; rer["nDCG@10"] = 0.0
     n=0
 
-    test_rows = [ID_TO_ROW[i] for i in IMG_IDS if i in test_imgs]
-    sub_vecs = IMG_VECS[test_rows]
-    row_to_id = [IMG_IDS[r] for r in test_rows]
+    # test_rows = [ID_TO_ROW[i] for i in IMG_IDS if i in test_imgs]
+    sub_vecs = IMG_VECS #IMG_VECS[test_rows]
+    row_to_id = IMG_IDS #[IMG_IDS[r] for r in test_rows]
 
     for _, row in tqdm(rows.iterrows(), total = len(rows), desc = "eval"):
         true_id = row["image"]
@@ -37,7 +37,13 @@ def evaluate(df):
         t /= np.linalg.norm(t)
 
         sims = sub_vecs @ t
-        cand= np.argparition(-sims, min(TOP_N, len(sims-1)))[:TOP_N]
+        k = min(TOP_N, len(sims))
+        cand = np.argsort(-sims)[:k]
+
+        if n == 0:
+            print("Candidate pool size:", len(sims))
+            print("reranker candidate size:", len(cand))
+            
         cand=cand[np.argsort(-sims[cand])]
 
         # iniitally CLIP rank
@@ -67,7 +73,7 @@ def evaluate(df):
 
 # higher = greater similarity
 if __name__ == "__main__":
-    df = pd.read_csv("data/flickr30/captions.csv")
+    df = pd.read_csv("data/flickr30k_subset/captions.csv")
     base, rer= evaluate(df)
     print("\n       CLIP        CLIP + reranker")
     for key in base:
