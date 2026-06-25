@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Semantic Photo Search
 
 A semantic image retrieval system that allows users to search images using natural-language descriptions. This project combines CLIP embeddings, FAISS vector search, and a two-stage retrieval pipeline with reranking to return the most similar images to a text query.
@@ -244,6 +243,4 @@ This would allow the reranker to capture semantic relationships that are not pre
 | nDCG@10   | 99.7%  | 98.9%         | 99.7%            |
 
 These results demonstrate that CLIP is already highly effective on Flickr30k retrieval, while the confidence-gated reranking framework provides a mechanism for selectively applying additional ranking models without degrading baseline performance.
-=======
 
->>>>>>> a1beec85fa893e975b48e45f50085933c2e138ea
