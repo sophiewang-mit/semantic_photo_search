@@ -190,6 +190,7 @@ const css = `
 
 .app {
   min-height: 100vh;
+  width: 100vw;
   background:
     radial-gradient(1100px 600px at 50% -15%, rgba(143, 200, 255, 0.10), transparent 60%),
     #0a1628;
